@@ -3,7 +3,7 @@
       "js": [ "scripts/script.js" ],
       "matches": [ "http://ru-auto.livejournal.com/*" ]
    } ],
-   "description": "add photo to comments in lj ru-auto",
+   "description": "Добавляет фотографии к коментариям пользователей жж-сообжества ru_auto",
    "manifest_version": 2,
    "minimum_chrome_version": "18",
    "icons": {
