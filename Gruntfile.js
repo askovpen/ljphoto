@@ -8,12 +8,10 @@ module.exports = function( grunt ) {
     grunt.loadNpmTasks( "grunt-replace" );
     grunt.loadNpmTasks( "grunt-mozilla-addon-sdk" );
     grunt.loadNpmTasks( "grunt-contrib-compress" );
-    
-
 grunt.initConfig({
     jshint: {
 	options: {smarttabs:true },
-	files: jsFiles
+	files: [jsFiles[0],'Gruntfile.js','./node_modules/grunt-contrib-readv/tasks/readv.js']
     },
     readv: { files: jsFiles },
     replace: {
