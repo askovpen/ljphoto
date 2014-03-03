@@ -1,9 +1,7 @@
 (function(){
-
     var forEach = function(obj, callback) {
 	[].forEach.call(obj, callback);
     };
-
     var LJPhoto, Photo, PhotoItem;
     LJPhoto = {
 	startup : function() {
@@ -71,7 +69,5 @@
 	    node.setAttribute('data-lj-injected', true);
 	}
     };
-
     LJPhoto.startup();
-
 })();
