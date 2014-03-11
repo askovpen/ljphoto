@@ -21,14 +21,14 @@
 		function(node) {
 		if (!node.hasAttribute('data-lj-injected'))
 		{
-		    uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent]=0;
+		    uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent]={count:0,fpost:0};
 		    Photo.inject(node);
 		    injected=injected+1;
 		}
 	    });
 	    if (Object.keys(uarr).length>0){
 		var xhr = new XMLHttpRequest();
-		xhr.open('POST', 'http://skovpen.org/ra/count.php',true);
+		xhr.open('POST', 'http://skovpen.org/ra/count2.php',true);
 		xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 		xhr.onreadystatechange = function() {
 		    if (xhr.readyState == 4) {
@@ -42,20 +42,28 @@
 			    forEach(document.getElementsByClassName('b-leaf-username-name'),
 				function(node) {
 				if (node.getElementsByClassName('i-photo').length===0){
-				    node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode(' Фоток: '));
-				    if (uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent]>0){
+				    node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode(' [Фоток: '));
+				    if (uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent].count>0){
 					var a=document.createElement('a');
 					a.setAttribute('href','http://skovpen.org/ra/#'+node.getElementsByClassName('i-ljuser-username')[0].textContent);
 					a.setAttribute('class','i-photo');
 					a.setAttribute('target','_blank');
-					a.textContent=' ('+uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent]+')';
+					a.textContent=' ('+uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent].count+')';
 					node.getElementsByClassName('ljuser')[0].appendChild(a);
 				    }
 				    else
 				    {
 					node.getElementsByClassName('ljuser')[0].className=node.getElementsByClassName('ljuser')[0].className+" i-photo";
-					node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode(' ('+uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent]+')'));
+					node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode(' ('+uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent].count+')'));
 				    }
+				    node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode(', в песочнице '));
+				    if (uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent].fpost.length==10){
+					node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode('с '+uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent].fpost));
+				    }else {
+					node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode('гость'));
+				    }
+				    node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode(']'));
+
 				}
 			    });
 			    uarr={};
