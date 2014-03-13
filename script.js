@@ -57,10 +57,20 @@
 					node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode(' ('+uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent].count+')'));
 				    }
 				    node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode(', в песочнице '));
+				    var span=document.createElement('span');
 				    if (uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent].fpost.length==10){
-					node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode('с '+uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent].fpost));
+					node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode('с '));
+					if (uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent].fpost.substr(0,4)>2012){
+					    span.style.color="chocolate";
+					}else {
+					    span.style.color="green";
+					}
+					span.appendChild(document.createTextNode(uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent].fpost));
+					node.getElementsByClassName('ljuser')[0].appendChild(span);
 				    }else {
-					node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode('гость'));
+					span.style.color="red";
+					span.appendChild(document.createTextNode('гость'));
+					node.getElementsByClassName('ljuser')[0].appendChild(span);
 				    }
 				    node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode(']'));
 
