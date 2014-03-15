@@ -1,4 +1,7 @@
 (function(){
+// @ifdef firefox
+// test
+// @endif
     var forEach = function(obj, callback) {
 	[].forEach.call(obj, callback);
     };
@@ -21,7 +24,7 @@
 		function(node) {
 		if (!node.hasAttribute('data-lj-injected'))
 		{
-		    uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent]={count:0,fpost:0};
+		    uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent]={count:0,fpost:0,pcount:0};
 		    Photo.inject(node);
 		    injected=injected+1;
 		}
@@ -41,20 +44,21 @@
 			    }
 			    forEach(document.getElementsByClassName('b-leaf-username-name'),
 				function(node) {
+				var a;
 				if (node.getElementsByClassName('i-photo').length===0){
 				    node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode(' [Фоток: '));
 				    if (uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent].count>0){
-					var a=document.createElement('a');
+					a=document.createElement('a');
 					a.setAttribute('href','http://skovpen.org/ra/#'+node.getElementsByClassName('i-ljuser-username')[0].textContent);
 					a.setAttribute('class','i-photo');
 					a.setAttribute('target','_blank');
-					a.textContent=' ('+uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent].count+')';
+					a.textContent=uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent].count;
 					node.getElementsByClassName('ljuser')[0].appendChild(a);
 				    }
 				    else
 				    {
 					node.getElementsByClassName('ljuser')[0].className=node.getElementsByClassName('ljuser')[0].className+" i-photo";
-					node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode(' ('+uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent].count+')'));
+					node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode(uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent].count));
 				    }
 				    node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode(', в песочнице '));
 				    var span=document.createElement('span');
@@ -71,6 +75,14 @@
 					span.style.color="red";
 					span.appendChild(document.createTextNode('гость'));
 					node.getElementsByClassName('ljuser')[0].appendChild(span);
+				    }
+				    if (uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent].pcount>0){
+					node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode(', постов: '));
+					a=document.createElement('a');
+					a.setAttribute('href','http://ru-auto.livejournal.com/?poster='+node.getElementsByClassName('i-ljuser-username')[0].textContent);
+					a.setAttribute('target','_blank');
+					a.textContent=uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent].pcount;
+					node.getElementsByClassName('ljuser')[0].appendChild(a);
 				    }
 				    node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode(']'));
 

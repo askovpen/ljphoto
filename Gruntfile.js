@@ -1,19 +1,44 @@
 module.exports = function( grunt ) {
     "use strict";
     var jsFiles=[
-	'./script.js',
+	'./ff/data/js/script.js',
+	'./chrome/scripts/script.js',
+	'Gruntfile.js',
+	'./node_modules/grunt-contrib-readv/tasks/readv.js'
     ];
     grunt.loadNpmTasks( "grunt-contrib-jshint" );
+    grunt.loadNpmTasks( "grunt-preprocess" );
     grunt.loadNpmTasks( "grunt-contrib-readv" );
     grunt.loadNpmTasks( "grunt-replace" );
     grunt.loadNpmTasks( "grunt-mozilla-addon-sdk" );
     grunt.loadNpmTasks( "grunt-contrib-compress" );
 grunt.initConfig({
+    preprocess: {
+	firefox: {
+	    options: { 
+		context: {
+		    firefox: true
+		}
+	    },
+	    src: 'script.js',
+	    dest: './ff/data/js/script.js'
+	},
+	chrome: {
+	    options: { 
+		context: {
+		    chrome: true
+		}
+	    },
+	    src: 'script.js',
+	    dest: './chrome/scripts/script.js'
+	}
+	
+    },
     jshint: {
 	options: {smarttabs:true },
 	files: [jsFiles[0],'Gruntfile.js','./node_modules/grunt-contrib-readv/tasks/readv.js']
     },
-    readv: { files: jsFiles },
+    readv: { files: ['script.js'] },
     replace: {
 	dist: {
 	    options: {
@@ -56,5 +81,5 @@ grunt.initConfig({
 	}
     }
 });
-grunt.registerTask( "default", [ "readv", "jshint","replace","mozilla-cfx-xpi",'compress' ] );
+grunt.registerTask( "default", [ "readv", "preprocess", "jshint","replace","mozilla-cfx-xpi",'compress' ] );
 };
