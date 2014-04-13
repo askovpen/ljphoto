@@ -1,0 +1,38 @@
+.thumbnail {
+	border: 1px solid #DDDDDD;
+	border-radius: 4px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
+	display: block;
+	line-height: 20px;
+	padding: 4px;
+	transition: all 0.2s ease-in-out 0s;
+}
+.fixed-width {
+	margin-bottom: 10px;
+	margin-left: 10px;
+	width:70px;
+	float: left;
+	display: block;
+}
+.thumbs {
+	padding: 0;
+	display: table;
+	line-height: 0;
+	list-style: none outside none;
+}
+.photo {
+	position:relative;
+	width:64px;
+	height:64px;
+	overflow:hidden;
+	margin-left: auto ;
+	margin-right: auto ;
+	text-align:center;
+}
+.photo img {
+	max-width:64px;
+	max-height:64px;
+}
+.popupwrapper {
+	min-width:250px;
+}

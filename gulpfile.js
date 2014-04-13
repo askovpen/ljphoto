@@ -1,10 +1,6 @@
 var gulp = require('gulp');
-//var gutil = require('gulp-util');
-//var es = require('event-stream');
 var chalk = require('chalk');
-//var changed = require('gulp-changed');
 var jshint = require('gulp-jshint');
-//var buster = require('gulp-buster');
 var cache = require('gulp-cache');
 var rename = require('gulp-rename');
 var exec = require('child_process').exec;
@@ -13,8 +9,14 @@ var preprocess = require('gulp-preprocess');
 var zip = require('gulp-zip');
 var paths= {
     js:[
-	'./ff/data/js/script.js',
+	'./safari/script.js',
 	'./chrome/scripts/script.js',
+	'./chrome/scripts/bg.js',
+	'./chrome/scripts/popup.js',
+	'./chrome/manifest.json',
+	'./ff/data/js/script.js',
+	'./ff/package.json',
+	'./ff/lib/main.js',
 	'gulpfile.js'
     ]
 };
@@ -38,12 +40,9 @@ gulp.task('preprocess', function() {
 		.pipe(preprocess({context: {safari: true}}))
 		.pipe(gulp.dest('./safari/'));
 });
-gulp.task('lint', function() {
+gulp.task('lint',['preprocess','replace'], function() {
     return gulp.src(paths.js)
-		.pipe(cache(jshint(),{
-			success: function (jshintedFile) { return jshintedFile.jshint.success; },
-			value: function (jshintedFile) {return { jshint: jshintedFile.jshint }; }
-		}))
+		.pipe(jshint())
 		.pipe(jshint.reporter('jshint-stylish'))
 		.pipe(jshint.reporter('fail'))
 		.on('end', function(){
@@ -64,19 +63,19 @@ gulp.task('replace',['version'], function() {
 		.pipe(rename('Info.plist'))
 		.pipe(gulp.dest('./safari'));
 });
-gulp.task('firefox',['replace'], function(done) {
+gulp.task('firefox',['replace','lint'], function(done) {
 	exec('./sdk/cfx.sh ./sdk/addon-sdk-1.16 ../../ff xpi', function(err){
 		gulp.src('./ff/ljphoto.xpi')
 			.pipe(gulp.dest('./dist'));
 		done(err);
 	});
 });
-gulp.task('chrome',['replace'], function() {
-	gulp.src(['manifest.json','scripts/script.js','icons/*.png'],{cwd:'/mnt/p/src/my/browser/ljphoto/chrome'})
+gulp.task('chrome',['replace','lint'], function() {
+	gulp.src(['manifest.json','scripts/*.js','icons/*.png','css/*/*','css/*'],{cwd:'/mnt/p/src/my/browser/ljphoto/chrome'})
 		.pipe(zip('ljphoto.zip'))
 		.pipe(gulp.dest('dist'));
 });
-gulp.task('safari',['replace'], function() {
+gulp.task('safari',['replace','lint'], function() {
 	gulp.src(['./safari/Info.plist', './safari/Settings.plist', './safari/script.js'])
 		.pipe(gulp.dest('./dist/ljphoto.safariextension'));
 });
