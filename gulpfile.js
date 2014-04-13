@@ -71,7 +71,7 @@ gulp.task('firefox',['replace','lint'], function(done) {
 	});
 });
 gulp.task('chrome',['replace','lint'], function() {
-	gulp.src(['manifest.json','scripts/*.js','icons/*.png','css/*/*','css/*'],{cwd:'/mnt/p/src/my/browser/ljphoto/chrome'})
+	gulp.src(['manifest.json','scripts/*.js','icons/*.png','css/*/*','css/*','popup.html'],{cwd:'/mnt/p/src/my/browser/ljphoto/chrome'})
 		.pipe(zip('ljphoto.zip'))
 		.pipe(gulp.dest('dist'));
 });
