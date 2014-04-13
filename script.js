@@ -130,10 +130,11 @@
 										}
 										res+="</ul>";
 										$(that).popover({
+											stopChildrenPropagation: false,
 											title:false,
 											content:res
 										}).popover('show');
-										$('.fancybox').fancybox({live:false});
+										$('.fancybox').colorbox({maxWidth:"100%",maxHeight:"100%"});
 								});
 							});
 // @endif

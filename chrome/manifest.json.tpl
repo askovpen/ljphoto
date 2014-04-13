@@ -8,8 +8,8 @@
 		"default_title": "test"
 	},
 	"content_scripts": [{
-		"css":["css/popover.css","css/my.css","css/jquery.fancybox.css"],
-		"js": [ "scripts/jquery.min.js","scripts/jquery.popover-1.1.2.js", "scripts/script.js","scripts/jquery.fancybox.pack.js" ],
+		"css":["css/popover.css","css/my.css","css/colorbox.css"],
+		"js": [ "scripts/jquery.min.js","scripts/jquery.popover-1.1.2.js", "scripts/script.js","scripts/jquery.colorbox-min.js" ],
 		"matches": [ "http://ru-auto.livejournal.com/*" ]
 	}],
 	"description": "Добавляет фотографии к коментариям пользователей жж-сообжества ru_auto",
