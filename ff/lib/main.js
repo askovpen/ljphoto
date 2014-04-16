@@ -1,6 +1,6 @@
 var pageMod = require("sdk/page-mod");
 var data = require("sdk/self").data;
-var ActionButton = require('sdk/ui/button/action');
+var {ActionButton} = require('sdk/ui/button/action');
 var panels = require("sdk/panel");
 var status={};
 var sxhr=require("sdk/net/xhr");

@@ -15,6 +15,7 @@ var paths= {
 	'./chrome/scripts/popup.js',
 	'./chrome/manifest.json',
 	'./ff/data/js/script.js',
+	'./ff/data/js/popup.js',
 	'./ff/package.json',
 	'./ff/lib/main.js',
 	'gulpfile.js'
@@ -39,10 +40,16 @@ gulp.task('preprocess', function() {
 	gulp.src('./common/js/script.js')
 		.pipe(preprocess({context: {safari: true}}))
 		.pipe(gulp.dest('./safari/'));
+	gulp.src('./common/js/popup.js')
+		.pipe(preprocess({context: {firefox: true}}))
+		.pipe(gulp.dest('./ff/data/js/'));
+	gulp.src('./common/js/popup.js')
+		.pipe(preprocess({context: {chrome: true}}))
+		.pipe(gulp.dest('./chrome/js/'));
 });
 gulp.task('lint',['preprocess','replace'], function() {
     return gulp.src(paths.js)
-		.pipe(jshint())
+		.pipe(jshint({moz:true}))
 		.pipe(jshint.reporter('jshint-stylish'))
 		.pipe(jshint.reporter('fail'))
 		.on('end', function(){
