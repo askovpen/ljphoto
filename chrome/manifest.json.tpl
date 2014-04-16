@@ -1,6 +1,6 @@
 {
 	"background": {
-		"scripts": ["scripts/bg.js"]
+		"scripts": ["js/bg.js"]
 	},
 	"browser_action": {
 		"default_icon": "icons/icon19.png",
@@ -9,7 +9,7 @@
 	},
 	"content_scripts": [{
 		"css":["css/popover.css","css/my.css","css/colorbox.css"],
-		"js": [ "scripts/jquery.min.js","scripts/jquery.popover-1.1.2.js", "scripts/script.js","scripts/jquery.colorbox-min.js" ],
+		"js": [ "js/jquery.min.js","js/jquery.popover-1.1.2.js", "js/script.js","js/jquery.colorbox-min.js" ],
 		"matches": [ "http://ru-auto.livejournal.com/*" ]
 	}],
 	"description": "Добавляет фотографии к коментариям пользователей жж-сообжества ru_auto",
@@ -24,7 +24,7 @@
 	},
 		"web_accessible_resources": [
 		"css/*",
-		"scripts/*"
+		"js/*"
 	],
 	"name": "ljphoto",
 	"permissions": [ "http://ru-auto.livejournal.com/*","cookies","http://skovpen.org/ra/*" ],

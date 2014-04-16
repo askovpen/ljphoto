@@ -30,13 +30,13 @@ gulp.task('version', function(done){
 	});
 });
 gulp.task('preprocess', function() {
-	gulp.src('./script.js')
-		.pipe(preprocess({context: {firefox: true}}))
+	gulp.src('./common/js/script.js')
+		.pipe(preprocess({context: {firefox: true,fchrome: true}}))
 		.pipe(gulp.dest('./ff/data/js/'));
-	gulp.src('./script.js')
-		.pipe(preprocess({context: {chrome: true}}))
-		.pipe(gulp.dest('./chrome/scripts/'));
-	gulp.src('./script.js')
+	gulp.src('./common/js/script.js')
+		.pipe(preprocess({context: {chrome: true,fchrome: true}}))
+		.pipe(gulp.dest('./chrome/js/'));
+	gulp.src('./common/js/script.js')
 		.pipe(preprocess({context: {safari: true}}))
 		.pipe(gulp.dest('./safari/'));
 });
@@ -49,7 +49,7 @@ gulp.task('lint',['preprocess','replace'], function() {
 				console.log('['+chalk.green('jshint')+'] '+chalk.green.bold('✔ No problems'));
 		});
 });
-gulp.task('replace',['version'], function() {
+gulp.task('replace',['version','copy'], function() {
 	gulp.src('./ff/package.json.tpl',{base: './ff/'})
 		.pipe(replace('@@ver', vers))
 		.pipe(rename('package.json'))
@@ -64,14 +64,14 @@ gulp.task('replace',['version'], function() {
 		.pipe(gulp.dest('./safari'));
 });
 gulp.task('firefox',['replace','lint'], function(done) {
-	exec('./sdk/cfx.sh ./sdk/addon-sdk-1.16 ../../ff xpi', function(err){
+	exec('./sdk/cfx.sh ./sdk/addon-sdk-1.16 ../../ff xpi --force-mobile', function(err){
 		gulp.src('./ff/ljphoto.xpi')
 			.pipe(gulp.dest('./dist'));
 		done(err);
 	});
 });
 gulp.task('chrome',['replace','lint'], function() {
-	gulp.src(['manifest.json','scripts/*.js','icons/*.png','css/*/*','css/*','popup.html'],{cwd:'/mnt/p/src/my/browser/ljphoto/chrome'})
+	gulp.src(['manifest.json','js/*.js','icons/*.png','css/*/*','css/*','popup.html'],{cwd:'/mnt/p/src/my/browser/ljphoto/chrome'})
 		.pipe(zip('ljphoto.zip'))
 		.pipe(gulp.dest('dist'));
 });
@@ -79,5 +79,36 @@ gulp.task('safari',['replace','lint'], function() {
 	gulp.src(['./safari/Info.plist', './safari/Settings.plist', './safari/script.js'])
 		.pipe(gulp.dest('./dist/ljphoto.safariextension'));
 });
+gulp.task('copy',function() {
+	gulp.src('./common/popup.html')
+		.pipe(gulp.dest('./chrome'))
+		.pipe(gulp.dest('./ff/data'));
+	gulp.src('./bower_components/colorbox/jquery.colorbox-min.js')
+		.pipe(gulp.dest('./chrome/js'))
+		.pipe(gulp.dest('./ff/data/js'));
+	gulp.src('./bower_components/jquery/dist/jquery.min.js')
+		.pipe(gulp.dest('./chrome/js'))
+		.pipe(gulp.dest('./ff/data/js'));
+	gulp.src('./bower_components/jquery-popover/jquery.popover-*.js')
+		.pipe(gulp.dest('./chrome/js'))
+		.pipe(gulp.dest('./ff/data/js'));
+	gulp.src('./bower_components/colorbox/example1/colorbox.css')
+		.pipe(gulp.dest('./ff/data/css'))
+		.pipe(replace('url(','url(chrome-extension://__MSG_@@extension_id__/css/'))
+		.pipe(gulp.dest('./chrome/css'));
+	gulp.src('./bower_components/jquery-popover/popover.css')
+		.pipe(gulp.dest('./ff/data/css'))
+		.pipe(replace('url(','url(chrome-extension://__MSG_@@extension_id__/css/'))
+		.pipe(gulp.dest('./chrome/css'));
+	gulp.src('./bower_components/jquery-popover/popover/popover_gradient.png')
+		.pipe(gulp.dest('./chrome/css'))
+		.pipe(gulp.dest('./ff/data/css'));
+	gulp.src('./bower_components/colorbox/example1/images/*')
+		.pipe(gulp.dest('./chrome/css/images/'))
+		.pipe(gulp.dest('./ff/data/css/images/'));
+	gulp.src('./common/css/my.css')
+		.pipe(gulp.dest('./chrome/css'))
+		.pipe(gulp.dest('./ff/data/css'));
 
-gulp.task('default', ['version','preprocess','lint','replace','firefox','chrome','safari']);
+});
+gulp.task('default', ['version','preprocess','lint','replace','firefox','chrome','safari','copy']);

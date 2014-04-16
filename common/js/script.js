@@ -1,13 +1,11 @@
 (function(){
-// @ifdef firefox
-// test
-// @endif
+
     var forEach = function(obj, callback) {
 		[].forEach.call(obj, callback);
     };
     var LJPhoto, Photo;
     LJPhoto = {
-// @ifdef chrome
+// @ifdef fchrome
 		logged:0,
 // @endif
 		startup : function() {
@@ -50,7 +48,7 @@
 								var a;
 								if (node.getElementsByClassName('i-photo').length===0){
 									node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode(' ['));
-// @ifdef chrome
+// @ifdef fchrome
 									if (LJPhoto.logged>0) {
 										node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode('Фоток: '));
 										if (uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent].count>0){
@@ -68,7 +66,7 @@
 										node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode(', '));
 									}
 // @endif
-// @ifndef chrome
+// @ifndef fchrome
 									node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode('Фоток: '));
 									if (uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent].count>0){
 											a=document.createElement('a');
@@ -112,15 +110,13 @@
 									node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode(']'));
 								}
 							});
-// @ifdef chrome
+// @ifdef fchrome
 							$(".popover1").click(function(event) {
 								event.preventDefault();
 								event.stopPropagation();
-//								console.log(this.parentNode);
 								var that=this;
 								$.getJSON('http://skovpen.org/ra/d.php', {count:50, last:0, sword: this.parentNode.getElementsByClassName('i-ljuser-username')[0].textContent, sname:'u.nick',stype:'asc',ss:3},
 									function(data){
-//										console.log(data);
 										var res='<ul class="thumbs">';
 										for (var i=0, len = data.length; i<len; i++) {
 											res+='<li class="fixed-width"><div class="thumbnail"><div class=photo>';
@@ -151,6 +147,11 @@
 	};
 // @ifdef chrome
 	chrome.runtime.sendMessage({method:'getStatus'},function(resp){
+// @endif
+// @ifdef firefox
+	self.port.on('setStatus',function(resp){
+// @endif
+// @ifdef fchrome
 			if (resp.result===false){
 				LJPhoto.logged=0;
 			} else {
@@ -158,5 +159,17 @@
 			}
 	});
 // @endif
+// @ifdef firefox
+	$.ajaxSetup({
+		type: "POST",
+		data: {},
+		dataType: 'json',
+		xhrFields: {
+			withCredentials: true
+		},
+		crossDomain: true
+	});
+// @endif
+
 	LJPhoto.startup();
 })();
