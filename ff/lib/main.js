@@ -19,12 +19,13 @@ var panel = panels.Panel({
 	contentScriptFile: data.url("js/popup.js")
 });
 panel.port.on("getStatus",getStatus);
+panel.port.on("exit",Exit);
 panel.port.on("getHStatus",checklogin);
 function handleChange(state) {
 	console.log(state);
 	panel.show({
-		width: 260,
-		height: 100,
+		width: 278,
+		height: 74,
 		position: button
 	});
 }
@@ -51,9 +52,20 @@ function checklogin() {
 			if (xhr.readyState == 4) {
 				if (xhr.status==200){
 					var res=JSON.parse(xhr.responseText);
-//					console.log(res);
 					status=res;
 					panel.port.emit('setStatus',status);
+				}
+			}
+		};
+		xhr.send();
+}
+function Exit() {
+		var xhr = sxhr.XMLHttpRequest();
+		xhr.open('GET', 'http://skovpen.org/ra/checklogin.php?logout=1',true);
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4) {
+				if (xhr.status==200){
+					checklogin();
 				}
 			}
 		};
