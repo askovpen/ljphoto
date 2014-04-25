@@ -48,6 +48,10 @@
 //				console.log(node);
 				uarr[window.location.pathname.match(/\d+/)[0]]=1;
 			});
+			$('tr td font b font').each(function(index){
+				console.log($(this).parent().parent()[0].href);
+				uarr[$(this).parent().parent()[0].href.match(/\d+/)[0]]=1;
+			});
 			if (Object.keys(uarr).length>0){
 				var xhr = new XMLHttpRequest();
 				xhr.open('POST', 'http://skovpen.org/ra/postvotes.php',true);
@@ -66,6 +70,30 @@
 								}
 							}
 //							console.log(posts);
+							$('tr td font b font').each(function(index){
+								$(this).prepend($('<span />').html($('<span>',{text:'['}).add($('<a>',{
+									text: ' '+Votes.posts[$(this).parent().parent()[0].href.match(/\d+/)[0]].vote+' ',
+									href: "#",
+									hover: function(event){ 
+										if (event.type=="mouseenter"){
+											console.log($(this).parent().parent().parent().parent()[0].href.match(/\d+/)[0]);
+											if (Object.keys(Votes.posts[$(this).parent().parent().parent().parent()[0].href.match(/\d+/)[0]].voters).length>0){
+												var res='<table border=0>';
+												for (var key in Votes.posts[$(this).parent().parent().parent().parent()[0].href.match(/\d+/)[0]].voters){
+													res+='<tr><td>'+key+'</td><td>'+Votes.posts[$(this).parent().parent().parent().parent()[0].href.match(/\d+/)[0]].voters[key]+'</td></tr>';
+												}
+												res+='</table>';
+												$(this).popover({
+													content:res,
+													trigger: 'hover'
+												}).popover('show');
+											}
+										}
+										return false;
+									},
+									click: function(){return false;}
+								})).add($('<span>',{text:'] '}))));
+							});
 							$('.b-singlepost-title').each(function(index){
 								var span=$('<span>');
 								$(this).prepend($('<span />').html($('<span>',{text:'['}).add($('<a>',{
