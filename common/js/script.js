@@ -7,6 +7,11 @@
     LJPhoto = {
 // @ifdef fchrome
 		logged:0,
+		uac:0,
+		access: {
+			photo: 1,
+			vote: 2
+		},
 // @endif
 		startup : function() {
 			this.onDOMLoad();
@@ -95,8 +100,8 @@
 								})).add($('<span>',{text:'] '}))));
 							});
 							$('.b-singlepost-title').each(function(index){
-								var span=$('<span>');
-								$(this).prepend($('<span />').html($('<span>',{text:'['}).add($('<a>',{
+								var eopen=$('<span>',{text:'['});
+								var eup=$('<a>',{
 									text: '↑',
 									title: 'up',
 									href: '#',
@@ -104,7 +109,8 @@
 										Votes.change(1);
 										return false;
 									}
-									}).css('text-decoration','none')).add($('<a>',{
+									}).css('text-decoration','none');
+								var evote=$('<a>',{
 										text: ' '+Votes.posts[window.location.pathname.match(/\d+/)[0]].vote+' ',
 										href: "#",
 										hover: function(event){ 
@@ -124,7 +130,8 @@
 											return false;
 										},
 										click: function(){return false;}
-									}).css('text-decoration','none')).add($('<a>',{
+									}).css('text-decoration','none');
+								var edown=$('<a>',{
 										text: '↓',
 										title: 'down',
 										href: "#",
@@ -132,8 +139,13 @@
 											Votes.change(-1);
 											return false;
 										}
-									}).css('text-decoration','none')).add($('<span>',{text:']'}))
-								));
+									}).css('text-decoration','none');
+								var eclose=$('<span>',{text:']'});
+								if (LJPhoto.uac & LJPhoto.access.vote) {
+									$(this).prepend($('<span />').html(eopen.add(eup).add(evote).add(edown).add(eclose)));
+								}else {
+									$(this).prepend($('<span />').html(eopen.add(evote).add(eclose)));
+								}
 							});
 						}
 					}
@@ -175,7 +187,7 @@
 								if (node.getElementsByClassName('i-photo').length===0){
 									node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode(' ['));
 // @ifdef fchrome
-									if (LJPhoto.logged>0) {
+									if (LJPhoto.uac & LJPhoto.access.photo) {
 										node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode('Фоток: '));
 										if (uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent].count>0){
 											a=document.createElement('a');
@@ -281,6 +293,9 @@
 				LJPhoto.logged=0;
 			} else {
 				LJPhoto.logged=1;
+			}
+			if ("access" in resp){
+				LJPhoto.uac=resp.access;
 			}
 	});
 // @endif
