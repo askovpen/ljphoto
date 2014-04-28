@@ -17,7 +17,7 @@
 // @ifdef firefox
 	self.port.on('setStatus',function(status){
 // @endif
-			if (status.result===false){
+			if (status.result===false && !("access" in status)){
 				document.getElementById("logged").style.display="none";
 				document.getElementById("enter").style.display="inline";
 				if (status.reason=="access"){
