@@ -220,8 +220,14 @@
 									}
 									node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode(', '));
 // @endif
+									node.getElementsByClassName('ljuser')[0].className=node.getElementsByClassName('ljuser')[0].className+" i-photo";
 									node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode('в песочнице '));
 									var span=document.createElement('span');
+//									if (uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent]===undefined){
+//										console.log(node.getElementsByClassName('i-ljuser-username')[0].textContent);
+//										console.log(uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent]);
+//										console.log(uarr);
+//									}
 									if (uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent].fpost.length==10){
 										node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode('с '));
 										if (uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent].fpost.substr(0,4)>2012){
