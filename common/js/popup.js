@@ -21,12 +21,12 @@
 				document.getElementById("logged").style.display="none";
 				document.getElementById("enter").style.display="inline";
 				if (status.reason=="access"){
-					document.getElementById("status").innerHTML="Для Вас доступ закрыт";
+					document.getElementById("status").textContent="Для Вас доступ закрыт";
 					document.getElementById("snick").style.display="none";
 					document.getElementById("submit").style.display="none";
 				}
 			}else {
-				document.getElementById("name").innerHTML=status.nick;
+				document.getElementById("name").textContent=status.nick;
 				document.getElementById("enter").style.display="none";
 				document.getElementById("logged").style.display="inline";
 			}
