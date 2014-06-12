@@ -14,147 +14,11 @@
 		},
 // @endif
 		startup : function() {
-			this.onDOMLoad();
-		},
-		onDOMLoad: function(){
 			window.setInterval(function(){
 				Photo.apply();
 			}, 1000);
-// @ifdef fchrome
-			Votes.apply();
-// @endif
 		}
 	};
-// @ifdef fchrome
-	Votes = {
-		posts: {},
-		change: function(val) {
-			var xhr = new XMLHttpRequest();
-			xhr.open('POST', 'http://skovpen.org/ra/postvote.php',true);
-			xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-			xhr.withCredentials=true;
-			xhr.onreadystatechange = function() {
-				if (xhr.readyState == 4) {
-					if (xhr.status==200){
-						Votes.apply();
-					}
-				}
-			};
-			xhr.send(JSON.stringify({
-				postid: window.location.pathname.match(/\d+/)[0],
-				vote: val
-			}));
-		},
-		apply: function() {
-			$('.b-singlepost-title span').remove();
-			var uarr={};
-			forEach(document.getElementsByClassName('b-singlepost-title'),
-				function(node) {
-//				console.log(node);
-				uarr[window.location.pathname.match(/\d+/)[0]]=1;
-			});
-			$('tr td font b font').each(function(index){
-				console.log($(this).parent().parent()[0].href);
-				uarr[$(this).parent().parent()[0].href.match(/\d+/)[0]]=1;
-			});
-			if (Object.keys(uarr).length>0){
-				var xhr = new XMLHttpRequest();
-				xhr.open('POST', 'http://skovpen.org/ra/postvotes.php',true);
-				xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-				xhr.onreadystatechange = function() {
-					if (xhr.readyState == 4) {
-						if (xhr.status==200){
-							var narr=JSON.parse(xhr.responseText);
-							for(var key in narr) {
-								Votes.posts[key]={};
-								Votes.posts[key].vote=0;
-								Votes.posts[key].voters={};
-								for (var key1 in narr[key]) {
-									Votes.posts[key].vote+=parseInt(narr[key][key1]);
-									Votes.posts[key].voters[key1]=narr[key][key1];
-								}
-							}
-//							console.log(posts);
-							$('tr td font b font').each(function(index){
-								$(this).prepend($('<span />').html($('<span>',{text:'['}).add($('<a>',{
-									text: ' '+Votes.posts[$(this).parent().parent()[0].href.match(/\d+/)[0]].vote+' ',
-									href: "#",
-									hover: function(event){ 
-										if (event.type=="mouseenter"){
-											console.log($(this).parent().parent().parent().parent()[0].href.match(/\d+/)[0]);
-											if (Object.keys(Votes.posts[$(this).parent().parent().parent().parent()[0].href.match(/\d+/)[0]].voters).length>0){
-												var res='<table border=0>';
-												for (var key in Votes.posts[$(this).parent().parent().parent().parent()[0].href.match(/\d+/)[0]].voters){
-													res+='<tr><td>'+key+'</td><td>'+Votes.posts[$(this).parent().parent().parent().parent()[0].href.match(/\d+/)[0]].voters[key]+'</td></tr>';
-												}
-												res+='</table>';
-												$(this).popover({
-													content:res,
-													trigger: 'hover'
-												}).popover('show');
-											}
-										}
-										return false;
-									},
-									click: function(){return false;}
-								})).add($('<span>',{text:'] '}))));
-							});
-							$('.b-singlepost-title').each(function(index){
-								var eopen=$('<span>',{text:'['});
-								var eup=$('<a>',{
-									text: '↑',
-									title: 'up',
-									href: '#',
-									click: function(){
-										Votes.change(1);
-										return false;
-									}
-									}).css('text-decoration','none');
-								var evote=$('<a>',{
-										text: ' '+Votes.posts[window.location.pathname.match(/\d+/)[0]].vote+' ',
-										href: "#",
-										hover: function(event){ 
-											if (event.type=="mouseenter"){
-												if (Object.keys(Votes.posts[window.location.pathname.match(/\d+/)[0]].voters).length>0){
-													var res='<table border=0>';
-													for (var key in Votes.posts[window.location.pathname.match(/\d+/)[0]].voters){
-														res+='<tr><td>'+key+'</td><td>'+Votes.posts[window.location.pathname.match(/\d+/)[0]].voters[key]+'</td></tr>';
-													}
-													res+='</table>';
-													$(this).popover({
-														content:res,
-														trigger: 'hover'
-													}).popover('show');
-												}
-											}
-											return false;
-										},
-										click: function(){return false;}
-									}).css('text-decoration','none');
-								var edown=$('<a>',{
-										text: '↓',
-										title: 'down',
-										href: "#",
-										click: function(){ 
-											Votes.change(-1);
-											return false;
-										}
-									}).css('text-decoration','none');
-								var eclose=$('<span>',{text:']'});
-								if (LJPhoto.uac & LJPhoto.access.vote) {
-									$(this).prepend($('<span />').html(eopen.add(eup).add(evote).add(edown).add(eclose)));
-								}else {
-									$(this).prepend($('<span />').html(eopen.add(evote).add(eclose)));
-								}
-							});
-						}
-					}
-				};
-				xhr.send(JSON.stringify(Object.keys(uarr)));
-			}
-		}
-	};
-// @endif
 	Photo = {
 		apply: function() {
 			var uarr={};
@@ -263,8 +127,8 @@
 										var res='<ul class="thumbs">';
 										for (var i=0, len = data.length; i<len; i++) {
 											res+='<li class="fixed-width"><div class="thumbnail"><div class=photo>';
-											res+='<a href=http://skovpen.org/ra/red.jpg?pid='+data[i].pid+' class="fancybox"  rel="'+data[i].nick+'" title="'+data[i].nick+'">';
-											res+='<img  src='+data[i].tn+'>';
+											res+='<a href=http://skovpen.org/ra/red.jpg?pid='+$('<div/>').html(data[i].pid).text()+' class="fancybox"  rel="'+$('<div/>').html(data[i].nick).text()+'" title="'+$('<div/>').html(data[i].nick).text()+'">';
+											res+='<img  src='+$('<div/>').html(data[i].tn).text()+'>';
 											res+='</a></div></li>';
 										}
 										res+="</ul>";
