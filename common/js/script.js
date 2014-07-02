@@ -12,6 +12,19 @@
 			photo: 1,
 			vote: 2
 		},
+		entityMap: {
+			"&": "&amp;",
+			"<": "&lt;",
+			">": "&gt;",
+			'"': '&quot;',
+			"'": '&#39;',
+			"/": '&#x2F;'
+		},
+        escapeHtml: function(string) {
+            return String(string).replace(/[&<>""''\/]/g, function (s) {
+                return LJPhoto.entityMap[s];
+            });
+        },
 // @endif
 		startup : function() {
 			window.setInterval(function(){
@@ -127,8 +140,8 @@
 										var res='<ul class="thumbs">';
 										for (var i=0, len = data.length; i<len; i++) {
 											res+='<li class="fixed-width"><div class="thumbnail"><div class=photo>';
-											res+='<a href=http://skovpen.org/ra/red.jpg?pid='+$('<div/>').html(data[i].pid).text()+' class="fancybox"  rel="'+$('<div/>').html(data[i].nick).text()+'" title="'+$('<div/>').html(data[i].nick).text()+'">';
-											res+='<img  src='+$('<div/>').html(data[i].tn).text()+'>';
+											res+='<a href="http://skovpen.org/ra/red.jpg?pid='+LJPhoto.escapeHtml(data[i].pid)+'" class="fancybox"  rel="'+LJPhoto.escapeHtml(data[i].nick)+'" title="'+LJPhoto.escapeHtml(data[i].nick)+'">';
+											res+='<img  src="'+LJPhoto.escapeHtml(data[i].tn)+'">';
 											res+='</a></div></li>';
 										}
 										res+="</ul>";
