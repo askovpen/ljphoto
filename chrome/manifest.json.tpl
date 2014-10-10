@@ -10,7 +10,7 @@
 	"content_scripts": [{
 		"css":["css/popover.css","css/my.css","css/colorbox.css"],
 		"js": [ "js/jquery.min.js","js/jquery.popover-1.1.2.js", "js/script.js","js/jquery.colorbox-min.js" ],
-		"matches": [ "http://ru-auto.livejournal.com/*" ]
+		"matches": [ "http://ru-auto.livejournal.com/*","https://www.facebook.com/*" ]
 	}],
 	"description": "Добавляет фотографии к коментариям пользователей жж-сообжества ru_auto",
 	"manifest_version": 2,
@@ -27,7 +27,7 @@
 		"js/*"
 	],
 	"name": "ljphoto",
-	"permissions": [ "http://ru-auto.livejournal.com/*","cookies","http://skovpen.org/ra/*" ],
+	"permissions": [ "http://ru-auto.livejournal.com/*","cookies","http://skovpen.org/ra/*","https://www.facebook.com/*" ],
 	"update_url": "https://clients2.google.com/service/update2/crx",
 	"version": "@@ver"
 }

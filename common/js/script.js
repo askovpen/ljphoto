@@ -36,6 +36,42 @@
 		apply: function() {
 			var uarr={};
 			var injected=0;
+// @ifdef chrome
+            var fbarr={};
+            if (window.location.href.match(/205720002785777/)) {
+                $.each($('a.UFICommentActorName:not([data-fb-injected])'), function(i,val) {
+                    $(this).attr('data-fb-injected',true);
+                    fbarr[$(this).attr('data-hovercard').match(/id=([^&]+)/)[1]]={nick:''};
+                });
+            }
+            if (Object.keys(fbarr).length>0){
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'https://skovpen.org/ra/fbcount.php',true);
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4) {
+                        if (xhr.status==200){
+                            var narr=JSON.parse(xhr.responseText);
+                            if (Object.keys(narr).length>0){
+                                for(var key in narr) {
+                                    fbarr[key]=narr[key];
+                                }
+                                $.each($('a.UFICommentActorName:not([data-fb-apply])'), function(i,val) {
+                                    $(this).attr('data-fb-apply',true);
+                                    var id=$(this).attr('data-hovercard').match(/id=([^&]+)/)[1];
+                                    if ('nick' in fbarr[id]) {
+                                        if (fbarr[id].nick.length>0) {
+                                            $(this).append('&nbsp;['+fbarr[id].nick+']');
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }
+                xhr.send(JSON.stringify(Object.keys(fbarr)));
+            }
+// @endif
 			forEach(document.getElementsByClassName('b-leaf-username-name'),
 				function(node) {
 				if (!node.hasAttribute('data-lj-injected'))
@@ -100,11 +136,6 @@
 									node.getElementsByClassName('ljuser')[0].className=node.getElementsByClassName('ljuser')[0].className+" i-photo";
 									node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode('в песочнице '));
 									var span=document.createElement('span');
-//									if (uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent]===undefined){
-//										console.log(node.getElementsByClassName('i-ljuser-username')[0].textContent);
-//										console.log(uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent]);
-//										console.log(uarr);
-//									}
 									if (uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent].fpost.length==10){
 										node.getElementsByClassName('ljuser')[0].appendChild(document.createTextNode('с '));
 										if (uarr[node.getElementsByClassName('i-ljuser-username')[0].textContent].fpost.substr(0,4)>2012){
