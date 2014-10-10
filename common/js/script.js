@@ -59,9 +59,11 @@
                                 $.each($('a.UFICommentActorName:not([data-fb-apply])'), function(i,val) {
                                     $(this).attr('data-fb-apply',true);
                                     var id=$(this).attr('data-hovercard').match(/id=([^&]+)/)[1];
-                                    if ('nick' in fbarr[id]) {
-                                        if (fbarr[id].nick.length>0) {
-                                            $(this).append('&nbsp;['+fbarr[id].nick+']');
+                                    if (id in fbarr) {
+                                        if ('nick' in fbarr[id]) {
+                                            if (fbarr[id].nick.length>0) {
+                                                $(this).append('&nbsp;['+fbarr[id].nick+']');
+                                            }
                                         }
                                     }
                                 });
