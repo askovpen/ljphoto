@@ -39,7 +39,7 @@
 // @ifdef chrome
             var fbarr={};
             if (window.location.href.match(/205720002785777/)) {
-                $.each($('a.UFICommentActorName:not([data-fb-injected])'), function(i,val) {
+                $.each($('a.UFICommentActorName:not([data-fb-injected]), a.profileLink[data-hovercard]:not([data-fb-injected])'), function(i,val) {
                     $(this).attr('data-fb-injected',true);
                     fbarr[$(this).attr('data-hovercard').match(/id=([^&]+)/)[1]]={nick:''};
                 });
@@ -56,7 +56,7 @@
                                 for(var key in narr) {
                                     fbarr[key]=narr[key];
                                 }
-                                $.each($('a.UFICommentActorName:not([data-fb-apply])'), function(i,val) {
+                                $.each($('a.UFICommentActorName:not([data-fb-apply]), a.profileLink[data-hovercard]:not([data-fb-apply])'), function(i,val) {
                                     $(this).attr('data-fb-apply',true);
                                     var id=$(this).attr('data-hovercard').match(/id=([^&]+)/)[1];
                                     if (id in fbarr) {
