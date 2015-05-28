@@ -35,7 +35,7 @@
 // @endif
 	});
 	document.getElementById("submit").addEventListener("click", function(){
-		var popup=window.open("http://skovpen.org/ra/oidc.php?ljname="+document.getElementById("nick").value+"&hash=","test","width=420,height=230,resizable=yes,scrollbars=yes,status=yes");
+		var popup=window.open("https://skovpen.org/ra/oidc.php?ljname="+document.getElementById("nick").value+"&hash=","test","width=420,height=230,resizable=yes,scrollbars=yes,status=yes");
 		var finishedInterval =setInterval(function() {
 			if (popup.closed) {
 				clearInterval(finishedInterval);

@@ -27,7 +27,7 @@
 		"js/*"
 	],
 	"name": "ljphoto",
-	"permissions": [ "http://ru-auto.livejournal.com/*","cookies","http://skovpen.org/ra/*","https://www.facebook.com/*" ],
+	"permissions": [ "http://ru-auto.livejournal.com/*","cookies","https://skovpen.org/ra/*","https://www.facebook.com/*" ],
 	"update_url": "https://clients2.google.com/service/update2/crx",
 	"version": "@@ver"
 }

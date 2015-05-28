@@ -47,7 +47,7 @@ function getStatus(){
 }
 function checklogin() {
 		var xhr = sxhr.XMLHttpRequest();
-		xhr.open('GET', 'http://skovpen.org/ra/checklogin.php',true);
+		xhr.open('GET', 'https://skovpen.org/ra/checklogin.php',true);
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState == 4) {
 				if (xhr.status==200){
@@ -61,7 +61,7 @@ function checklogin() {
 }
 function Exit() {
 		var xhr = sxhr.XMLHttpRequest();
-		xhr.open('GET', 'http://skovpen.org/ra/checklogin.php?logout=1',true);
+		xhr.open('GET', 'https://skovpen.org/ra/checklogin.php?logout=1',true);
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState == 4) {
 				if (xhr.status==200){
