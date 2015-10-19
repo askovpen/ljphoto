@@ -38,7 +38,7 @@
             var injected=0;
 // @ifdef chrome
             var fbarr={};
-            if (window.location.href.match(/205720002785777/)) {
+            if (window.location.href.match(/205720002785777|1653666201584434/)) {
                 $.each($('a[data-hovercard]:not([data-fb-injected]):not(a:has(img))'), function(i,val) {
                     $(this).attr('data-fb-injected',true);
                     fbarr[$(this).attr('data-hovercard').match(/id=([^&]+)/)[1]]={nick:''};
