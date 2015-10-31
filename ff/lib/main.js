@@ -1,10 +1,11 @@
 var pageMod = require("sdk/page-mod");
 var data = require("sdk/self").data;
 var {ActionButton} = require('sdk/ui/button/action');
+var { ToggleButton } = require("sdk/ui/button/toggle");
 var panels = require("sdk/panel");
 var status={};
 var sxhr=require("sdk/net/xhr");
-var button = ActionButton({
+var button = ToggleButton({
 	id: "my-button",
 	label: "my button",
 	icon: {

@@ -1,4 +1,15 @@
 {
-    "name": "ljphoto",
-    "description": "test"
+  "name": "ljphoto",
+  "description": "test",
+  "dependencies": {
+    "chalk": "^1.1.1",
+    "gulp": "^3.9.0",
+    "gulp-cache": "^0.3.0",
+    "gulp-jshint": "^1.12.0",
+    "gulp-preprocess": "^1.2.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4",
+    "gulp-zip": "^3.0.2",
+    "jshint-stylish": "^2.0.1"
+  }
 }

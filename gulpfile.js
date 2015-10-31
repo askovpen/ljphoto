@@ -71,8 +71,8 @@ gulp.task('replace',['version','copy'], function() {
 		.pipe(gulp.dest('./safari'));
 });
 gulp.task('firefox',['replace','lint'], function(done) {
-	exec('./sdk/cfx.sh ./sdk/addon-sdk-1.16 ../../ff xpi --force-mobile', function(err){
-		gulp.src('./ff/ljphoto.xpi')
+	exec('jpm xpi',{cwd:'./ff/'}, function(err){
+		gulp.src('./ff/*.xpi')
 			.pipe(gulp.dest('./dist'));
 		done(err);
 	});
